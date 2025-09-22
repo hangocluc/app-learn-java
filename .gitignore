@@ -41,3 +41,31 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+# Flutter/Dart
+.dart_tool/
+.packages
+build/
+.pub-cache/
+.pub/
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+
+# Android
+android/.gradle/
+android/app/build/
+
+# macOS
+macos/Pods/
+
+# Linux
+linux/Pods/
+
+# Windows
+windows/runner/Debug/
+windows/runner/Release/
+windows/runner/x64/
+windows/runner/x86/
