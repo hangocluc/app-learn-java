@@ -2,13 +2,14 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
+//import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:url_launcher/url_launcher.dart';
+//import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
+import 'package:learn_java/firebase_options.dart';
 import '../../main.dart';
 import '../theme/app_color.dart';
 import '../theme/app_radius.dart';
@@ -16,17 +17,12 @@ import '../theme/app_spacing.dart';
 import '../widget/app_icon/app_asset_image.dart';
 import '../widget/app_text/app_text.dart';
 import '../widget/app_toast/app_toast.dart';
-import 'permission_handler_utils.dart';
 
 Future<void> initFirebase() async {
-  // await Firebase.initializeApp(
-  //   name: 'PROD',
-  //   options: Platform.isIOS
-  //       ? DefaultFirebaseOptions.iosOfficial
-  //       : DefaultFirebaseOptions.androidProd,
-  // ).then((value) {
-  //   log('Firebase options: ${value.options}');
-  // });
+  final app = await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  log('Firebase initialized: ${app.name}');
 }
 
 Future<void> enableFirebaseAnalytics() async {
@@ -78,20 +74,20 @@ String removeHtmlTags(String html) {
   return html.replaceAll(regExp, ''); // Loại bỏ tất cả các thẻ HTML
 }
 
-permissionPhotoHandle(
-    Function(XFile? pickedFile) onPickPhoto, BuildContext context) async {
-  if (context.mounted) {
-    final hasPermission = await AppPermissionHandler.requestStoragePermission(
-      context,
-    );
-    if (hasPermission) {
-      final ImagePicker picker = ImagePicker();
-      final XFile? pickedFile =
-          await picker.pickImage(source: ImageSource.gallery);
-      onPickPhoto(pickedFile);
-    }
-  }
-}
+// permissionPhotoHandle(
+//     Function(XFile? pickedFile) onPickPhoto, BuildContext context) async {
+//   if (context.mounted) {
+//     final hasPermission = await AppPermissionHandler.requestStoragePermission(
+//       context,
+//     );
+//     if (hasPermission) {
+//       final ImagePicker picker = ImagePicker();
+//       final XFile? pickedFile =
+//           await picker.pickImage(source: ImageSource.gallery);
+//       onPickPhoto(pickedFile);
+//     }
+//   }
+//}
 
 String getDataFromKey({required String key, Map<dynamic, dynamic>? data}) {
   if (data != null && data.keys.contains(key)) {
@@ -151,10 +147,10 @@ openLink(BuildContext context, String? url) {
     if (url?.isEmpty ?? true) {
       throw Exception();
     }
-    launchUrl(
-      Uri.parse(url!),
-      mode: LaunchMode.platformDefault,
-    );
+    // launchUrl(
+    //   Uri.parse(url!),
+    //   mode: LaunchMode.platformDefault,
+    // );
   } catch (error) {
     showToastError(context, 'language.lblCannotOpenWeb');
   }
@@ -176,22 +172,22 @@ Widget waterDropHeader() {
   );
 }
 
-Future<bool> checkActivityRecognitionPermission() async {
-  bool granted = await Permission.activityRecognition.isGranted;
+// Future<bool> checkActivityRecognitionPermission() async {
+//   bool granted = await Permission.activityRecognition.isGranted;
 
-  if (!granted) {
-    granted = await Permission.activityRecognition.request() ==
-        PermissionStatus.granted;
-  }
+//   if (!granted) {
+//     granted = await Permission.activityRecognition.request() ==
+//         PermissionStatus.granted;
+//   }
 
-  return granted;
-}
+//   return granted;
+// }
 
-Future<void> requestActivityRecognitionPermission(BuildContext context) async {
-  if (context.mounted) {
-    await Permission.activityRecognition.request();
-  }
-}
+// Future<void> requestActivityRecognitionPermission(BuildContext context) async {
+//   if (context.mounted) {
+//     await Permission.activityRecognition.request();
+//   }
+// }
 
 Widget backToHome(BuildContext context) {
   return GestureDetector(

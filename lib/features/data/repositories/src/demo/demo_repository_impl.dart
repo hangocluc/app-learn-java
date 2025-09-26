@@ -20,4 +20,19 @@ class DemoRepositoryImpl implements DemoRepository {
       rethrow;
     }
   }
+
+  Future<ApiResponse?> login({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await demoService.login(email, password);
+      if (response.isSuccessResponse) {
+        return response;
+      }
+      throw Exception(response.message);
+    } catch (error) {
+      rethrow;
+    }
+  }
 }

@@ -37,16 +37,16 @@ Future<void> registerNetworkDependencies(GetIt sl) async {
     HandleErrorInterceptor(),
     UnauthInterceptor(),
   ]);
-  if (!isProduction && alice != null) {
-    sl
-        .get<Dio>(instanceName: INSTANCE_AUTH_DIO)
-        .interceptors
-        .add(alice!.getDioInterceptor());
-    sl
-        .get<Dio>(instanceName: INSTANCE_UNAUTH_DIO)
-        .interceptors
-        .add(alice!.getDioInterceptor());
-  }
+  // if (!isProduction && alice != null) {
+  //   sl
+  //       .get<Dio>(instanceName: INSTANCE_AUTH_DIO)
+  //       .interceptors
+  //       .add(alice!.getDioInterceptor());
+  //   sl
+  //       .get<Dio>(instanceName: INSTANCE_UNAUTH_DIO)
+  //       .interceptors
+  //       .add(alice!.getDioInterceptor());
+  // }
 
   // initial service
   sl.registerFactory<DemoService>(

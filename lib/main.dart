@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:alice/alice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -20,7 +18,7 @@ import 'features/app/dependencies/dependencies.dart';
 final GetIt sl = GetIt.instance;
 
 const appIcon = Assets.icons;
-Alice? alice;
+//Alice? alice;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +27,7 @@ void main() async {
   await enableFirebaseAnalytics();
   registerNavigator(sl);
   await setupEnv();
-  setupAlice();
+  //setupAlice();
   await registerDependencies(sl);
   configLoading();
   runApp(const MyApp());
@@ -63,21 +61,9 @@ Future<void> setupEnv() async {
   Logger().d("Env initial $flavor : ${env.apiServer}");
 }
 
-setupAlice() {
-  final isProd = sl<Env>().isProduction;
-  alice = Alice(
-    showShareButton: true,
-    showInspectorOnShake: !isProd,
-    showNotification: false,
-    navigatorKey: sl<NavigationService>().navigatorKey,
-  );
-}
-
 GlobalKey<NavigatorState>? getNavigatorKeyByEnv() {
   final isProd = sl<Env>().isProduction;
   if (isProd) {
     return sl<NavigationService>().navigatorKey;
-  } else {
-    return alice?.getNavigatorKey();
   }
 }

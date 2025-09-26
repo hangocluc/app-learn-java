@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1016646892735",
+    "project_id": "applearnjava",
+    "storage_bucket": "applearnjava.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1016646892735:android:66a502721371d955d51a0a",
+        "android_client_info": {
+          "package_name": "com.example.learn_java"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKRSqa1yPPOYwO4sHeRtA-3n00PCIm6OI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

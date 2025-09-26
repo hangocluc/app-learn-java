@@ -36,10 +36,10 @@ class _AppPickAvatarState extends State<AppPickAvatar> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        permissionPhotoHandle((file) {
-          widget.avatar.value = file?.path ?? '';
-          widget.callBack(file);
-        }, context);
+        //permissionPhotoHandle((file) {
+        //   widget.avatar.value = file?.path ?? '';
+        //   widget.callBack(file);
+        // }, context);
       },
       child: Stack(
         clipBehavior: Clip.none,

@@ -17,4 +17,19 @@ class DemoUsecase extends BaseUseCase<DemoEntity?, NoParams?> {
       return Left(error);
     }
   }
+
+  Future<Either<Exception, void>> login({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await repository.login(
+        email: email,
+        password: password,
+      );
+      return Right(response?.data);
+    } on Exception catch (error) {
+      return Left(error);
+    }
+  }
 }

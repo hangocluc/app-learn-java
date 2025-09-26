@@ -179,9 +179,7 @@ Dio _initDio() {
     HandleErrorInterceptor(apiHeader: sl.get()),
     UnauthInterceptor(),
   ]);
-  if (!isProduction && alice != null) {
-    dio.interceptors.add(alice!.getDioInterceptor());
-  }
+
   return dio;
 }
 

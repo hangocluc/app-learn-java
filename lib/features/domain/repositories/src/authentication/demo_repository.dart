@@ -5,4 +5,8 @@ abstract class DemoRepository {
   Future<ApiResponse?> getDemo({
     String? username,
   });
+  Future<ApiResponse?> login({
+    required String email,
+    required String password,
+  });
 }

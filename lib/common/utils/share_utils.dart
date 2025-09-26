@@ -75,43 +75,43 @@ class ShareUtils {
     _showCustomShareSheet(context, file, text, picData);
   }
 
-  static Future<void> captureImageAndShare(
-    BuildContext context,
-    ScreenshotController screenshotController,
-    Widget widget,
-    String text,
-  ) async {
-    if (Platform.isAndroid) {
-      final hasPermission = await AppPermissionHandler.storagePermission();
-      if (!hasPermission && context.mounted) {
-        showToastError(context, 'No Permisson');
-        return;
-      }
-    }
+  // static Future<void> captureImageAndShare(
+  //   BuildContext context,
+  //   ScreenshotController screenshotController,
+  //   Widget widget,
+  //   String text,
+  // ) async {
+  //   if (Platform.isAndroid) {
+  //     final hasPermission = await AppPermissionHandler.storagePermission();
+  //     if (!hasPermission && context.mounted) {
+  //       showToastError(context, 'No Permisson');
+  //       return;
+  //     }
+  //   }
 
-    try {
-      final picData = await screenshotController.captureFromWidget(
-        widget,
-        delay: const Duration(milliseconds: 100),
-      );
+  //   try {
+  //     final picData = await screenshotController.captureFromWidget(
+  //       widget,
+  //       delay: const Duration(milliseconds: 100),
+  //     );
 
-      final tempDirectory = await getTemporaryDirectory();
-      final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final savedPath = '${tempDirectory.path}/image_$timestamp.png';
+  //     final tempDirectory = await getTemporaryDirectory();
+  //     final timestamp = DateTime.now().millisecondsSinceEpoch;
+  //     final savedPath = '${tempDirectory.path}/image_$timestamp.png';
 
-      File imageFile = File(savedPath);
+  //     File imageFile = File(savedPath);
 
-      await imageFile.writeAsBytes(picData);
+  //     await imageFile.writeAsBytes(picData);
 
-      if (context.mounted) {
-        _showCustomShareSheet(context, imageFile, text, picData);
-      }
-    } catch (error) {
-      if (context.mounted) {
-        showToastError(context, ' $error');
-      }
-    }
-  }
+  //     if (context.mounted) {
+  //       _showCustomShareSheet(context, imageFile, text, picData);
+  //     }
+  //   } catch (error) {
+  //     if (context.mounted) {
+  //       showToastError(context, ' $error');
+  //     }
+  //   }
+  // }
 
   static void _showCustomShareSheet(
       BuildContext context, File file, String? text, Uint8List picData) {
