@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../widget/app_toast/app_toast.dart';
 import 'permission_handler_utils.dart';
@@ -67,7 +66,6 @@ import 'snack_bar_utils.dart';
 
 class ShareUtils {
   static void share(String permalink) {
-    Share.share(permalink);
   }
 
   static void shareFiles(BuildContext context, File file, Uint8List picData,
@@ -155,8 +153,6 @@ class ShareUtils {
               icon: Icons.share,
               text: 'Share',
               onTap: () {
-                Share.shareXFiles([XFile(file.path)], text: text);
-
                 Navigator.pop(context);
               },
             ),
