@@ -25,9 +25,34 @@ class _LoginPageState extends State<LoginPage> {
 
       if (account != null) {
         debugPrint('User signed in: ${account.displayName}, ${account.email}');
-        // Sau khi login thành công bạn có thể chuyển sang màn hình khác
-        Navigator.of(context).pushNamed(RouteName.home);
-        cubit.login(email: 'admin', password: 'admin');
+        setState(() {
+          _isLoading = true;
+        });
+
+        try {
+          final result = await cubit.login(email: 'admin', password: 'admin');
+          result.fold(
+            (error) {
+              // Xử lý lỗi
+              debugPrint("Login error: $error");
+              setState(() {
+                _isLoading = false;
+              });
+            },
+            (data) {
+              // Login thành công, navigate đến MainPage
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                RouteName.main,
+                (route) => false,
+              );
+            },
+          );
+        } catch (error) {
+          debugPrint("Login error: $error");
+          setState(() {
+            _isLoading = false;
+          });
+        }
       } else {
         debugPrint("User canceled login");
       }

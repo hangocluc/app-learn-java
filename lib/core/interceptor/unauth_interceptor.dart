@@ -11,6 +11,9 @@ class UnauthInterceptor extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
+    // Handle redirects manually
+    options.followRedirects = false;
+    options.validateStatus = (s) => s != null && s < 500;
     final apiHeader = GetIt.instance.get<ApiHeader>();
     if (apiHeader.getAccessToken() != null) {
       options.headers = apiHeader.getAccessTokenHeader()

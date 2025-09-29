@@ -49,14 +49,12 @@ class _DemoService implements DemoService {
   }
 
   @override
-  Future<ApiResponse<dynamic>> login(
-    String email,
-    String password,
-  ) async {
+  Future<ApiResponse<dynamic>> login(Map<String, dynamic> data) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    final _data = <String, dynamic>{};
+    _data.addAll(data);
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<ApiResponse<dynamic>>(Options(
       method: 'POST',
@@ -65,7 +63,7 @@ class _DemoService implements DemoService {
     )
             .compose(
               _dio.options,
-              '/login',
+              '/api/login',
               queryParameters: queryParameters,
               data: _data,
             )

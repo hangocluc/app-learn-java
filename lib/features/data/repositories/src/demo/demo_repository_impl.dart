@@ -26,7 +26,12 @@ class DemoRepositoryImpl implements DemoRepository {
     required String password,
   }) async {
     try {
-      final response = await demoService.login(email, password);
+      final response = await demoService.login(
+        {
+          'email': email,
+          'password': password,
+        },
+      );
       if (response.isSuccessResponse) {
         return response;
       }

@@ -12,7 +12,7 @@ class ApiResponse<T> {
   dynamic errors;
 
   bool get isSuccessResponse {
-    return code != null && code == 200;
+    return success == true || (code != null && code == 200);
   }
 
   ApiResponse(this.data, this.code, this.message, this.success);

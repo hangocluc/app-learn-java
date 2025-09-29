@@ -17,8 +17,7 @@ abstract class DemoService {
   Future<ApiResponse<DemoModel>> demo();
 
   @POST(DemoApiPath.login)
-  Future<ApiResponse> login(
-      @Path('email') String email, @Path('password') String password);
+  Future<ApiResponse> login(@Body() Map<String, dynamic> data);
   // @GET(DemoApiPath.notificationPath)
   // Future<ApiResponse<NotificationModel>> listNotification(
   //   @Query('genreId') String genreId,

@@ -49,6 +49,10 @@ String dio2Curl(RequestOptions requestOption) {
 }
 
 String cURLRepresentation(RequestOptions options) {
+  print('Debug - Request Method: ${options.method}');
+  print('Debug - Request Data: ${options.data}');
+  print('Debug - Request Data Type: ${options.data?.runtimeType}');
+
   List<String> components = ['curl -i'];
   //if (options.method.toUpperCase() == 'GET') {
   components.add('-X ${options.method}');
@@ -64,8 +68,15 @@ String cURLRepresentation(RequestOptions options) {
     if (options.data is FormData) {
       components.add(extractFormData({}, options.data));
     } else {
-      var data = json.encode(options.data);
-      data = data.replaceAll('\'', '\\\'');
+      var data = options.data;
+      if (data is String) {
+        // Nếu data đã là string, giữ nguyên
+        data = data.replaceAll('\'', '\\\'');
+      } else {
+        // Nếu data là null hoặc kiểu khác, encode thành JSON
+        data = data != null ? json.encode(data) : '{}';
+        data = data.replaceAll('\'', '\\\'');
+      }
       components.add('-d \'$data\'');
     }
   }

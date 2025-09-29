@@ -18,6 +18,10 @@ Future<void> registerNetworkDependencies(GetIt sl) async {
     receiveTimeout: Duration(seconds: env.apiReceiverTimeout),
     sendTimeout: Duration(seconds: env.apiSendTimeout),
     contentType: env.apiContentType,
+    followRedirects: true,
+    validateStatus: (status) {
+      return status != null && status < 500;
+    },
   );
 
   sl.registerLazySingleton<Dio>(
