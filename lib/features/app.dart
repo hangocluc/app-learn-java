@@ -11,6 +11,7 @@ import 'app/routes/src/generate_route.dart';
 import 'app/routes/src/routes_name.dart';
 import 'presentation/cubits/demo_cubit/demo_cubit.dart';
 import 'presentation/cubits/demo_cubit/demo_state.dart';
+import 'presentation/cubits/profile_cubit/profile_cubit.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -33,6 +34,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   List<BlocProvider> _appBlocProviders() {
     return [
       BlocProvider<DemoCubit>(create: (context) => sl.get<DemoCubit>()),
+      BlocProvider<ProfileCubit>(create: (context) => sl.get<ProfileCubit>()),
     ];
   }
 

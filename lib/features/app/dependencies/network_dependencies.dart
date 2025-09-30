@@ -4,14 +4,13 @@ import 'package:get_it/get_it.dart';
 import '../../../core/interceptor/auth_interceptor.dart';
 import '../../../core/interceptor/error_interceptor.dart';
 import '../../../core/interceptor/unauth_interceptor.dart';
-import '../../../main.dart';
 import '../../data/providers/network_service/src/demo_service.dart';
+import '../../data/providers/profile_service/profile_service.dart';
 import '../app_env/env.dart';
 import '../app_env/network_env.dart';
 
 Future<void> registerNetworkDependencies(GetIt sl) async {
   final env = sl.get<Env>().envNetwork;
-  final isProduction = sl.get<Env>().isProduction;
   final dioOption = BaseOptions(
     baseUrl: env.apiServer,
     connectTimeout: Duration(seconds: env.apiConnectTimeout),
@@ -55,6 +54,12 @@ Future<void> registerNetworkDependencies(GetIt sl) async {
   // initial service
   sl.registerFactory<AppService>(
     () => AppService(
+      sl.get<Dio>(instanceName: INSTANCE_UNAUTH_DIO),
+    ),
+  );
+
+  sl.registerFactory<ProfileService>(
+    () => ProfileService(
       sl.get<Dio>(instanceName: INSTANCE_UNAUTH_DIO),
     ),
   );
