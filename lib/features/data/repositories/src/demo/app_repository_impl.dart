@@ -1,4 +1,4 @@
-import 'package:learn_java/features/domain/entities/program_model.dart';
+import 'package:learn_java/features/domain/entities/src/program/program_model.dart';
 import 'package:learn_java/features/domain/repositories/repositories.dart';
 
 import '../../../../../core/base/src/api_response.dart';
@@ -38,16 +38,6 @@ class AppRepositoryImpl implements AppRepository {
         return response;
       }
       throw Exception(response.message);
-    } catch (error) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<List<ProgramModel>> getPrograms() async {
-    try {
-      final response = await appService.getProgram();
-      return response.map((e) => e.toDomain()).toList();
     } catch (error) {
       rethrow;
     }

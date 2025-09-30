@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:learn_java/features/data/providers/program_service/program_service.dart';
 
 import '../../../core/interceptor/auth_interceptor.dart';
 import '../../../core/interceptor/error_interceptor.dart';
@@ -60,6 +61,12 @@ Future<void> registerNetworkDependencies(GetIt sl) async {
 
   sl.registerFactory<ProfileService>(
     () => ProfileService(
+      sl.get<Dio>(instanceName: INSTANCE_UNAUTH_DIO),
+    ),
+  );
+
+  sl.registerFactory<ProgramService>(
+    () => ProgramService(
       sl.get<Dio>(instanceName: INSTANCE_UNAUTH_DIO),
     ),
   );

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'demo_service.dart';
+part of 'program_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'demo_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations
 
-class _AppService implements AppService {
-  _AppService(
+class _ProgramService implements ProgramService {
+  _ProgramService(
     this._dio, {
     this.baseUrl,
     this.errorLogger,
@@ -22,19 +22,19 @@ class _AppService implements AppService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<DemoModel>> demo() async {
+  Future<List<ProgramResponse>> getProgram() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<DemoModel>>(Options(
+    final _options = _setStreamType<List<ProgramResponse>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/auth/register',
+          '/api/get-program',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -43,13 +43,13 @@ class _AppService implements AppService {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<DemoModel> _value;
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<ProgramResponse> _value;
     try {
-      _value = ApiResponse<DemoModel>.fromJson(
-        _result.data!,
-        (json) => DemoModel.fromJson(json as Map<String, dynamic>),
-      );
+      _value = _result.data!
+          .map((dynamic i) =>
+              ProgramResponse.fromJson(i as Map<String, dynamic>))
+          .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -58,20 +58,19 @@ class _AppService implements AppService {
   }
 
   @override
-  Future<ApiResponse<dynamic>> login(Map<String, dynamic> data) async {
+  Future<List<ProgramDetailResponse>> getProgramDetail(String programId) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'programId': programId};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(data);
-    final _options = _setStreamType<ApiResponse<dynamic>>(Options(
-      method: 'POST',
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<ProgramDetailResponse>>(Options(
+      method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/api/login',
+          '/api/get-program-detail',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -80,13 +79,13 @@ class _AppService implements AppService {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<dynamic> _value;
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<ProgramDetailResponse> _value;
     try {
-      _value = ApiResponse<dynamic>.fromJson(
-        _result.data!,
-        (json) => json as dynamic,
-      );
+      _value = _result.data!
+          .map((dynamic i) =>
+              ProgramDetailResponse.fromJson(i as Map<String, dynamic>))
+          .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

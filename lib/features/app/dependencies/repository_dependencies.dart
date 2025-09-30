@@ -1,9 +1,11 @@
 import 'package:get_it/get_it.dart';
+import 'package:learn_java/features/data/repositories/src/program/program_repository_impl.dart';
+import 'package:learn_java/features/domain/repositories/src/program/program_repository.dart';
 
-import '../../data/repositories/src/profile/profile_repository_impl.dart';
-import '../../domain/repositories/src/profile/profile_repository.dart';
 import '../../data/repositories/src/demo/app_repository_impl.dart';
+import '../../data/repositories/src/profile/profile_repository_impl.dart';
 import '../../domain/repositories/src/app_repository.dart';
+import '../../domain/repositories/src/profile/profile_repository.dart';
 
 Future<void> registerRepositoryDI(GetIt sl) async {
   sl.registerFactory<AppRepository>(
@@ -12,5 +14,9 @@ Future<void> registerRepositoryDI(GetIt sl) async {
 
   sl.registerFactory<ProfileRepository>(
     () => ProfileRepositoryImpl(service: sl.get()),
+  );
+
+  sl.registerFactory<ProgramRepository>(
+    () => ProgramRepositoryImpl(service: sl.get()),
   );
 }

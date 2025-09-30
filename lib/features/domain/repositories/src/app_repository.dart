@@ -1,4 +1,4 @@
-import 'package:learn_java/features/domain/entities/program_model.dart';
+import 'package:learn_java/features/domain/entities/src/program/program_model.dart';
 
 import '../../../../core/base/src/api_response.dart';
 import '../../../data/models/demo_model/demo_model.dart';
@@ -11,6 +11,4 @@ abstract class AppRepository {
     required String email,
     required String password,
   });
-
-  Future<List<ProgramModel>> getPrograms();
 }

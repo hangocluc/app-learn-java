@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:learn_java/features/domain/entities/program_model.dart';
+import 'package:learn_java/features/domain/entities/src/program/program_model.dart';
 
 import '../../../../core/base/src/base_usecase.dart';
 import '../../entities/src/demo_entity.dart';
@@ -30,15 +30,6 @@ class DemoUsecase extends BaseUseCase<DemoEntity?, NoParams?> {
         password: password,
       );
       return Right(response?.data);
-    } on Exception catch (error) {
-      return Left(error);
-    }
-  }
-
-  Future<Either<Exception, List<ProgramModel>>> getProgram() async {
-    try {
-      final response = await repository.getPrograms();
-      return Right(response);
     } on Exception catch (error) {
       return Left(error);
     }

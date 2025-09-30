@@ -54,6 +54,12 @@ void dismissLoadingOverlay(BuildContext context) {
   }
 }
 
+void dismissLoadingOverlayDirectly(BuildContext context) {
+  if (EasyLoading.isShow) {
+    EasyLoading.dismiss();
+  }
+}
+
 void configLoading() {
   EasyLoading.instance
     ..indicatorColor = Colors.white

@@ -1,6 +1,6 @@
 // ignore: depend_on_referenced_packages
 import 'package:dio/dio.dart';
-import 'package:learn_java/features/data/models/program_response.dart';
+import 'package:learn_java/features/data/models/program_model/program_response.dart';
 // ignore: depend_on_referenced_packages
 import 'package:retrofit/retrofit.dart';
 
@@ -19,9 +19,6 @@ abstract class AppService {
 
   @POST(AppApiPath.login)
   Future<ApiResponse> login(@Body() Map<String, dynamic> data);
-
-  @GET(AppApiPath.program)
-  Future<List<ProgramResponse>> getProgram();
   // @GET(DemoApiPath.notificationPath)
   // Future<ApiResponse<NotificationModel>> listNotification(
   //   @Query('genreId') String genreId,

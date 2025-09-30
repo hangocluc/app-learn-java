@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learn_java/common/widget/app_loading_overlay/app_loading_overlay.dart';
+import 'package:learn_java/common/widget/app_toast/app_toast.dart';
+import 'package:learn_java/features/domain/entities/src/program/program_model.dart';
 import 'package:learn_java/features/presentation/cubits/program_cubit/program_cubit.dart';
+import 'package:learn_java/features/presentation/pages/program_page/detail_program/detail_program.dart';
 import 'package:learn_java/features/presentation/pages/program_page/widget/program_item.dart';
 
-class ProgramScreen extends StatelessWidget {
-  const ProgramScreen({super.key});
+class ListProgram extends StatelessWidget {
+  const ListProgram({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +37,12 @@ class ProgramScreen extends StatelessWidget {
             itemCount: programs.length,
             itemBuilder: (context, index) {
               final program = programs[index];
-              return ProgramItem(program: program);
+              return ProgramItem(
+                program: program,
+                onTap: () {
+                  onItemClick(program, context);
+                },
+              );
             },
           );
         }
@@ -41,5 +51,28 @@ class ProgramScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> onItemClick(ProgramModel program, BuildContext context) async {
+    showLoadingOverlay(context);
+    final programDetails =
+        await context.read<ProgramCubit>().getDetailProgram(program.id);
+
+    if (!context.mounted) return;
+    dismissLoadingOverlayDirectly(context);
+
+    if (programDetails != null && programDetails.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (ctx) => DetailProgram(
+            programDetails: programDetails,
+            title: program.name,
+          ),
+        ),
+      );
+      return;
+    }
+    showToastError(context, "Something went wrong, please try again later.");
   }
 }
