@@ -1,2 +1,2 @@
-export 'src/demo/demo_repository_impl.dart';
+export 'src/demo/app_repository_impl.dart';
 

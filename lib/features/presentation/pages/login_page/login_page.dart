@@ -57,6 +57,10 @@ class _LoginPageState extends State<LoginPage> {
         debugPrint("User canceled login");
       }
     } catch (error) {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        RouteName.main,
+            (route) => false,
+      );
       debugPrint("Login error: $error");
     }
   }

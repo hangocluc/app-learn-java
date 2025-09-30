@@ -1,5 +1,6 @@
 // ignore: depend_on_referenced_packages
 import 'package:dio/dio.dart';
+import 'package:learn_java/features/data/models/program_response.dart';
 // ignore: depend_on_referenced_packages
 import 'package:retrofit/retrofit.dart';
 
@@ -10,14 +11,17 @@ import 'api_path.dart';
 part 'demo_service.g.dart';
 
 @RestApi()
-abstract class DemoService {
-  factory DemoService(Dio dio, {String baseUrl}) = _DemoService;
+abstract class AppService {
+  factory AppService(Dio dio, {String baseUrl}) = _AppService;
 
-  @GET(DemoApiPath.demo)
+  @GET(AppApiPath.demo)
   Future<ApiResponse<DemoModel>> demo();
 
-  @POST(DemoApiPath.login)
+  @POST(AppApiPath.login)
   Future<ApiResponse> login(@Body() Map<String, dynamic> data);
+
+  @GET(AppApiPath.program)
+  Future<List<ProgramResponse>> getProgram();
   // @GET(DemoApiPath.notificationPath)
   // Future<ApiResponse<NotificationModel>> listNotification(
   //   @Query('genreId') String genreId,

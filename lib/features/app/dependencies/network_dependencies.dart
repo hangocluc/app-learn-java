@@ -53,8 +53,8 @@ Future<void> registerNetworkDependencies(GetIt sl) async {
   // }
 
   // initial service
-  sl.registerFactory<DemoService>(
-    () => DemoService(
+  sl.registerFactory<AppService>(
+    () => AppService(
       sl.get<Dio>(instanceName: INSTANCE_UNAUTH_DIO),
     ),
   );
