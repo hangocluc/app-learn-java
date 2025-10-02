@@ -1,12 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:learn_java/features/data/providers/program_service/program_service.dart';
+import 'package:learn_java/features/data/providers/lesson_service/lesson_service.dart';
+import 'package:learn_java/features/data/providers/chat_service/chat_service.dart';
 
 import '../../../core/interceptor/auth_interceptor.dart';
 import '../../../core/interceptor/error_interceptor.dart';
 import '../../../core/interceptor/unauth_interceptor.dart';
-import '../../data/providers/network_service/src/demo_service.dart';
 import '../../data/providers/profile_service/profile_service.dart';
+import '../../data/providers/network_service/src/app_service.dart';
 import '../app_env/env.dart';
 import '../app_env/network_env.dart';
 
@@ -67,6 +69,18 @@ Future<void> registerNetworkDependencies(GetIt sl) async {
 
   sl.registerFactory<ProgramService>(
     () => ProgramService(
+      sl.get<Dio>(instanceName: INSTANCE_UNAUTH_DIO),
+    ),
+  );
+
+  sl.registerFactory<LessonService>(
+    () => LessonService(
+      sl.get<Dio>(instanceName: INSTANCE_UNAUTH_DIO),
+    ),
+  );
+
+  sl.registerFactory<ChatService>(
+    () => ChatService(
       sl.get<Dio>(instanceName: INSTANCE_UNAUTH_DIO),
     ),
   );

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:learn_java/main.dart';
+import 'package:learn_java/common/app_shared_preferences/app_shared_preferences.dart';
+import 'package:learn_java/common/app_shared_preferences/app_shared_preferences_key.dart';
+import 'package:learn_java/features/app/routes/src/routes_name.dart';
+import 'package:learn_java/features/presentation/pages/login_page/login_page.dart';
 import '../../cubits/profile_cubit/profile_cubit.dart';
 import '../../cubits/profile_cubit/profile_state.dart';
 import '../../../../common/widget/app_loading_overlay/app_loading_overlay.dart';
@@ -11,6 +15,7 @@ import '../../widgets/profile_chart/profile_chart_widget.dart';
 import '../../widgets/profile_stats/profile_stats_widget.dart';
 import '../../widgets/profile_ranking/profile_ranking_widget.dart';
 import '../../../data/providers/google_signin_service.dart';
+import '../../../../core/storage/storage_manager.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -34,9 +39,12 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  void _loadProfileData() {
-    // Using a sample user ID - in real app, this would come from authentication
-    const String userId = "619e1c95b4dcb2278ffc7222";
+  Future<void> _loadProfileData() async {
+    final storedUserId = await StorageManager.getUserId();
+    debugPrint('StorageManager.getUserId (init) -> $storedUserId');
+    final String userId = storedUserId ?? "619e1c95b4dcb2278ffc7222";
+    debugPrint('ProfilePage using userId (init) -> $userId');
+    if (!mounted) return;
     cubit.loadProfileData(userId);
   }
 
@@ -66,9 +74,41 @@ class _ProfilePageState extends State<ProfilePage> {
         elevation: 0,
         actions: [
           IconButton(
+            icon: const Icon(Icons.logout, color: Colors.white),
+            tooltip: 'Logout',
+            onPressed: () async {
+              try {
+                // Sign out Google
+                await GoogleSignInService.signOut();
+              } catch (_) {}
+
+              // Clear local storages
+              try {
+                await StorageManager.clearUserData();
+              } catch (_) {}
+              try {
+                final prefs = sl.get<AppSharedPreferences>();
+                await prefs.remove(AppSharedPreferencesKey.userId);
+              } catch (_) {}
+
+              if (!mounted) return;
+              // Navigate to LoginPage to allow choosing another account
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => const LoginPage()),
+                (route) => false,
+              );
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.refresh, color: Colors.white),
-            onPressed: () {
-              const String userId = "619e1c95b4dcb2278ffc7222";
+            onPressed: () async {
+              final storedUserId = await StorageManager.getUserId();
+              debugPrint(
+                  'StorageManager.getUserId (appBar refresh) -> $storedUserId');
+              final String userId = storedUserId ?? "619e1c95b4dcb2278ffc7222";
+              debugPrint(
+                  'ProfilePage using userId (appBar refresh) -> $userId');
+              if (!mounted) return;
               cubit.refreshData(userId);
             },
           ),
@@ -125,7 +165,13 @@ class _ProfilePageState extends State<ProfilePage> {
             if (state is ProfileStateSuccess) {
               return RefreshIndicator(
                 onRefresh: () async {
-                  const String userId = "619e1c95b4dcb2278ffc7222";
+                  final storedUserId = await StorageManager.getUserId();
+                  debugPrint(
+                      'StorageManager.getUserId (pull-to-refresh) -> $storedUserId');
+                  final String userId =
+                      storedUserId ?? "619e1c95b4dcb2278ffc7222";
+                  debugPrint(
+                      'ProfilePage using userId (pull-to-refresh) -> $userId');
                   await context.read<ProfileCubit>().refreshData(userId);
                 },
                 child: SingleChildScrollView(
@@ -200,8 +246,7 @@ class _ProfilePageState extends State<ProfilePage> {
               backgroundColor: Colors.white,
               child: ClipOval(
                 child: CachedNetworkImage(
-                  imageUrl: _photoUrl ??
-                      'https://via.placeholder.com/100x100/4A90E2/FFFFFF?text=U',
+                  imageUrl: _photoUrl ?? '',
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,

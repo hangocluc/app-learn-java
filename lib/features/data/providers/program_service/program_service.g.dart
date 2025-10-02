@@ -34,7 +34,7 @@ class _ProgramService implements ProgramService {
     )
         .compose(
           _dio.options,
-          '/api/get-program',
+          '/api/program',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -70,7 +70,7 @@ class _ProgramService implements ProgramService {
     )
         .compose(
           _dio.options,
-          '/api/get-program-detail',
+          '/api/program-detail',
           queryParameters: queryParameters,
           data: _data,
         )

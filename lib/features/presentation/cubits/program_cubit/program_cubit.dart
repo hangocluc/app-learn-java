@@ -9,7 +9,7 @@ part 'program_state.dart';
 
 class ProgramCubit extends Cubit<ProgramState> {
   ProgramCubit() : super(ProgramStateInitial());
-  final _programUsecase = sl<ProgramUsecase>();
+  final _programUsecase = sl.get<ProgramUsecase>();
 
   Future<void> getProgram() async {
     final result = await _programUsecase.getProgram();

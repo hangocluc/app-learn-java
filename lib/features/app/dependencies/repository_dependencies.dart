@@ -1,6 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:learn_java/features/data/repositories/src/program/program_repository_impl.dart';
 import 'package:learn_java/features/domain/repositories/src/program/program_repository.dart';
+import 'package:learn_java/features/data/repositories/src/lesson/lesson_repository_impl.dart';
+import 'package:learn_java/features/domain/repositories/src/lesson/lesson_repository.dart';
+import 'package:learn_java/features/data/repositories/src/chat/chat_repository_impl.dart';
+import 'package:learn_java/features/domain/repositories/src/chat/chat_repository.dart';
 
 import '../../data/repositories/src/demo/app_repository_impl.dart';
 import '../../data/repositories/src/profile/profile_repository_impl.dart';
@@ -18,5 +22,13 @@ Future<void> registerRepositoryDI(GetIt sl) async {
 
   sl.registerFactory<ProgramRepository>(
     () => ProgramRepositoryImpl(service: sl.get()),
+  );
+
+  sl.registerFactory<LessonRepository>(
+    () => LessonRepositoryImpl(lessonService: sl.get()),
+  );
+
+  sl.registerFactory<ChatRepository>(
+    () => ChatRepositoryImpl(chatService: sl.get()),
   );
 }

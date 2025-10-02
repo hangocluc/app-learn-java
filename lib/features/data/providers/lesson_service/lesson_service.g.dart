@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'demo_service.dart';
+part of 'lesson_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'demo_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations
 
-class _AppService implements AppService {
-  _AppService(
+class _LessonService implements LessonService {
+  _LessonService(
     this._dio, {
     this.baseUrl,
     this.errorLogger,
@@ -22,19 +22,19 @@ class _AppService implements AppService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ApiResponse<DemoModel>> demo() async {
+  Future<ApiResponse<List<LessonModel>>> getAllLessons() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ApiResponse<DemoModel>>(Options(
+    final _options = _setStreamType<ApiResponse<List<LessonModel>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/auth/register',
+          '/api/get-all-in-lesson',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -44,11 +44,16 @@ class _AppService implements AppService {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<DemoModel> _value;
+    late ApiResponse<List<LessonModel>> _value;
     try {
-      _value = ApiResponse<DemoModel>.fromJson(
+      _value = ApiResponse<List<LessonModel>>.fromJson(
         _result.data!,
-        (json) => DemoModel.fromJson(json as Map<String, dynamic>),
+        (json) => json is List<dynamic>
+            ? json
+                .map<LessonModel>(
+                    (i) => LessonModel.fromJson(i as Map<String, dynamic>))
+                .toList()
+            : List.empty(),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
@@ -58,12 +63,12 @@ class _AppService implements AppService {
   }
 
   @override
-  Future<ApiResponse<dynamic>> login(Map<String, dynamic> data) async {
+  Future<ApiResponse<dynamic>> updateProcess(ProgressRequestModel body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(data);
+    _data.addAll(body.toJson());
     final _options = _setStreamType<ApiResponse<dynamic>>(Options(
       method: 'POST',
       headers: _headers,
@@ -71,7 +76,7 @@ class _AppService implements AppService {
     )
         .compose(
           _dio.options,
-          '/api/login',
+          '/api/update-process',
           queryParameters: queryParameters,
           data: _data,
         )

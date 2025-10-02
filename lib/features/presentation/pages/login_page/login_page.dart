@@ -3,7 +3,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:learn_java/features/data/providers/google_signin_service.dart';
 import 'package:learn_java/main.dart';
 
+import '../../../../core/storage/storage_manager.dart';
+import 'package:learn_java/common/app_shared_preferences/app_shared_preferences.dart';
+import 'package:learn_java/common/app_shared_preferences/app_shared_preferences_key.dart';
 import '../../../app/routes/src/routes_name.dart';
+import '../../../data/models/src/user_model.dart';
 import '../../../domain/usecases/src/demo_usecase.dart';
 import '../demo_page/compoment/demo_page.dart';
 
@@ -29,8 +33,17 @@ class _LoginPageState extends State<LoginPage> {
           _isLoading = true;
         });
 
+        // Create User object from Google account info
+        final user = UserModel(
+          gmail: account.email,
+          username: account.displayName,
+          imageUrl: account.photoUrl?.toString(),
+          tokenDevice:
+              'flutter_device_token', // You can get real device token here
+        );
+
         try {
-          final result = await cubit.login(email: 'admin', password: 'admin');
+          final result = await cubit.getOrCreateNewUser(user);
           result.fold(
             (error) {
               // Xử lý lỗi
@@ -39,7 +52,28 @@ class _LoginPageState extends State<LoginPage> {
                 _isLoading = false;
               });
             },
-            (data) {
+            (data) async {
+              // Save user data to storage (only when valid)
+              final userId = data?.id;
+              if (userId != null && userId.isNotEmpty) {
+                StorageManager.saveUserId(userId);
+                StorageManager.saveUserName(data?.username ?? '');
+                StorageManager.saveUserEmail(data?.gmail ?? '');
+                StorageManager.saveUserImage(data?.imageUrl ?? '');
+
+                // Also persist to AppSharedPreferences for quiz/progress flow
+                try {
+                  final prefs = sl.get<AppSharedPreferences>();
+                  await prefs.setString(AppSharedPreferencesKey.userId, userId);
+                } catch (e) {
+                  debugPrint(
+                      'Persist userId to AppSharedPreferences failed: $e');
+                }
+              } else {
+                debugPrint(
+                    'Login returned empty/invalid userId; skipping persist');
+              }
+
               // Login thành công, navigate đến MainPage
               Navigator.of(context).pushNamedAndRemoveUntil(
                 RouteName.main,
@@ -57,9 +91,10 @@ class _LoginPageState extends State<LoginPage> {
         debugPrint("User canceled login");
       }
     } catch (error) {
+      // Even if Google Sign In fails, navigate to main page
       Navigator.of(context).pushNamedAndRemoveUntil(
         RouteName.main,
-            (route) => false,
+        (route) => false,
       );
       debugPrint("Login error: $error");
     }

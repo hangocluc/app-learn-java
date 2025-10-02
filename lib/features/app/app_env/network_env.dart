@@ -32,25 +32,16 @@ class EnvNetwork {
       "api_server",
       fallback: "",
     );
-    final apiConnectTimeout = int.tryParse(
-      dotenv.get("api_connect_timeout"),
-      radix: API_CONNECT_TIMEOUT_DEFAULT,
-    );
-    final apiReceiverTimeout = int.tryParse(
-      dotenv.get("api_receiver_timeout"),
-      radix: API_RECEIVER_TIMEOUT_DEFAULT,
-    );
-    final apiSendTimeout = int.tryParse(
-      dotenv.get("api_send_timeout"),
-      radix: API_SEND_TIMEOUT_DEFAULT,
-    );
+    final apiConnectTimeout = API_CONNECT_TIMEOUT_DEFAULT;
+    final apiReceiverTimeout = API_RECEIVER_TIMEOUT_DEFAULT;
+    final apiSendTimeout = API_SEND_TIMEOUT_DEFAULT;
     final apiContentType = dotenv.get("api_content_type");
 
     return EnvNetwork(
         apiServer: apiServer,
-        apiConnectTimeout: apiConnectTimeout!,
-        apiReceiverTimeout: apiReceiverTimeout!,
-        apiSendTimeout: apiSendTimeout!,
+        apiConnectTimeout: apiConnectTimeout,
+        apiReceiverTimeout: apiReceiverTimeout,
+        apiSendTimeout: apiSendTimeout,
         apiContentType: apiContentType);
   }
 }

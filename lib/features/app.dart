@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:learn_java/features/presentation/cubits/lesson_cubit/lesson_cubit.dart';
 
 import '../common/l10n/generate/app_localizations.dart';
 import '../common/widget/app_overlay/overlay_widget.dart';
@@ -35,6 +36,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return [
       BlocProvider<DemoCubit>(create: (context) => sl.get<DemoCubit>()),
       BlocProvider<ProfileCubit>(create: (context) => sl.get<ProfileCubit>()),
+      BlocProvider<LessonCubit>(create: (context) => sl.get<LessonCubit>()),
     ];
   }
 
@@ -54,8 +56,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             builder: (context, state) {
               return MaterialApp(
                 builder: (context, child) {
-                  child = OverlayWidget.init()(context, child);
                   child = EasyLoading.init()(context, child);
+                  child = OverlayWidget.init()(context, child);
+                  child =
+                      child; // Force non-null since we know child will be provided
                   return MediaQuery(
                     data: MediaQuery.of(context)
                         .copyWith(textScaler: TextScaler.noScaling),

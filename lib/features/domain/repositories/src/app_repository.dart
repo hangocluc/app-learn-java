@@ -2,6 +2,7 @@ import 'package:learn_java/features/domain/entities/src/program/program_model.da
 
 import '../../../../core/base/src/api_response.dart';
 import '../../../data/models/demo_model/demo_model.dart';
+import '../../../data/models/src/user_model.dart';
 
 abstract class AppRepository {
   Future<ApiResponse?> getDemo({
@@ -11,4 +12,8 @@ abstract class AppRepository {
     required String email,
     required String password,
   });
+
+  Future<ApiResponse<UserModel>?> getOrCreateNewUser(UserModel user);
+
+  Future<ApiResponse<UserModel>?> getUserInfo(String gmail);
 }

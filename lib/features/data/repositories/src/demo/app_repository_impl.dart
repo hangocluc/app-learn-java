@@ -1,9 +1,9 @@
-import 'package:learn_java/features/domain/entities/src/program/program_model.dart';
+import 'package:learn_java/features/data/providers/network_service/src/app_service.dart';
 import 'package:learn_java/features/domain/repositories/repositories.dart';
 
 import '../../../../../core/base/src/api_response.dart';
 import '../../../models/models.dart';
-import '../../../providers/network_service/src/demo_service.dart';
+import '../../../models/src/user_model.dart';
 
 class AppRepositoryImpl implements AppRepository {
   final AppService appService;
@@ -23,6 +23,7 @@ class AppRepositoryImpl implements AppRepository {
     }
   }
 
+  @override
   Future<ApiResponse?> login({
     required String email,
     required String password,
@@ -34,6 +35,32 @@ class AppRepositoryImpl implements AppRepository {
           'password': password,
         },
       );
+      if (response.isSuccessResponse) {
+        return response;
+      }
+      throw Exception(response.message);
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ApiResponse<UserModel>?> getOrCreateNewUser(UserModel user) async {
+    try {
+      final response = await appService.getOrCreateNewUser(user);
+      if (response.isSuccessResponse) {
+        return response;
+      }
+      throw Exception(response.message);
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ApiResponse<UserModel>?> getUserInfo(String gmail) async {
+    try {
+      final response = await appService.getUserInfo(gmail);
       if (response.isSuccessResponse) {
         return response;
       }
