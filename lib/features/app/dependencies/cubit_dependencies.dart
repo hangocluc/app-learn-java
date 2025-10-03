@@ -7,10 +7,12 @@ import '../../presentation/cubits/lesson_cubit/lesson_cubit.dart';
 import '../../presentation/cubits/quiz_cubit/quiz_cubit.dart';
 import '../../presentation/cubits/chat_cubit/chat_cubit.dart';
 import '../../presentation/cubits/program_cubit/program_cubit.dart';
+import '../../presentation/cubits/compiler_cubit/compiler_cubit.dart';
 import '../../domain/usecases/src/profile/profile_usecase.dart' as profile_uc;
 import '../../domain/usecases/src/lesson_usecase.dart';
-import '../../domain/usecases/src/program_usecase.dart';
+import '../../domain/usecases/program_usecase.dart';
 import '../../data/providers/lesson_service/lesson_service.dart';
+import '../../data/services/compiler_service.dart';
 
 Future<void> registerCubitDI(GetIt sl) async {
   sl.registerLazySingleton(
@@ -40,6 +42,10 @@ Future<void> registerCubitDI(GetIt sl) async {
   );
 
   sl.registerFactory<ProgramCubit>(
-    () => ProgramCubit(),
+    () => ProgramCubit(programUsecase: sl.get<ProgramUsecase>()),
+  );
+
+  sl.registerFactory<CompilerCubit>(
+    () => CompilerCubit(compilerService: sl.get<CompilerService>()),
   );
 }

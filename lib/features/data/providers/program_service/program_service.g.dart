@@ -22,19 +22,19 @@ class _ProgramService implements ProgramService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<ProgramResponse>> getProgram() async {
+  Future<List<ProgramModel>> getAllPrograms() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<ProgramResponse>>(Options(
+    final _options = _setStreamType<List<ProgramModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/api/program',
+          '/api/get-all-in-program',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -44,47 +44,10 @@ class _ProgramService implements ProgramService {
           baseUrl,
         )));
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<ProgramResponse> _value;
+    late List<ProgramModel> _value;
     try {
       _value = _result.data!
-          .map((dynamic i) =>
-              ProgramResponse.fromJson(i as Map<String, dynamic>))
-          .toList();
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<List<ProgramDetailResponse>> getProgramDetail(String programId) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'programId': programId};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<ProgramDetailResponse>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/api/program-detail',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<ProgramDetailResponse> _value;
-    try {
-      _value = _result.data!
-          .map((dynamic i) =>
-              ProgramDetailResponse.fromJson(i as Map<String, dynamic>))
+          .map((dynamic i) => ProgramModel.fromJson(i as Map<String, dynamic>))
           .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);

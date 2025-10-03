@@ -76,7 +76,7 @@ class _ProfileService implements ProfileService {
     )
         .compose(
           _dio.options,
-          '/api/get-profile-rank',
+          '/api/get-top-user',
           queryParameters: queryParameters,
           data: _data,
         )

@@ -48,6 +48,7 @@ dependencies:
   flutter_dotenv: ^6.0.0
   flutter_screenutil: ^5.9.3
   image_picker: ^1.1.2
+  flutter_highlight: ^0.7.0
   flutter_easyloading: ^3.0.5
   cached_network_image: ^3.4.0
   shared_preferences: ^2.5.3

@@ -1,37 +1,33 @@
-import 'package:bloc/bloc.dart';
-import 'package:learn_java/features/domain/entities/src/program/program_detail.dart';
-import 'package:learn_java/features/domain/entities/src/program/program_model.dart';
-import 'package:learn_java/features/domain/usecases/src/program_usecase.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learn_java/features/data/entities/program_entity/program_entity.dart';
+import 'package:learn_java/core/base/src/api_response.dart';
+import 'package:learn_java/features/domain/usecases/program_usecase.dart';
 
-import '../../../../main.dart';
+part 'program_cubit_state.dart';
 
-part 'program_state.dart';
+class ProgramCubit extends Cubit<ProgramCubitState> {
+  final ProgramUsecase programUsecase;
 
-class ProgramCubit extends Cubit<ProgramState> {
-  ProgramCubit() : super(ProgramStateInitial());
-  final _programUsecase = sl.get<ProgramUsecase>();
+  ProgramCubit({required this.programUsecase}) : super(ProgramCubitInitial());
 
-  Future<void> getProgram() async {
-    final result = await _programUsecase.getProgram();
-    result.fold(
-      (error) {
-        emit(ProgramStateError(message: error.toString()));
-      },
-      (data) {
-        emit(ProgramStateSuccess(programs: data));
-      },
-    );
+  Future<void> loadPrograms() async {
+    emit(ProgramCubitLoading());
+
+    try {
+      final response = await programUsecase.getAllPrograms();
+
+      if (response?.isSuccessResponse == true && response?.data != null) {
+        emit(ProgramCubitLoaded(programs: response!.data!));
+      } else {
+        emit(ProgramCubitError(
+            message: response?.message ?? 'Failed to load programs'));
+      }
+    } catch (e) {
+      emit(ProgramCubitError(message: e.toString()));
+    }
   }
 
-  Future<List<ProgramDetail>?> getDetailProgram(String id) async {
-    final result = await _programUsecase.getProgramDetail(id);
-    return result.fold(
-      (error) {
-        return null;
-      },
-      (data) {
-        return data;
-      },
-    );
+  void refreshData() {
+    loadPrograms();
   }
 }

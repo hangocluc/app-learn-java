@@ -5,7 +5,7 @@ import '../program_page/program_page.dart';
 import '../profile_page/profile_page.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+  const MainPage({super.key});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -14,14 +14,20 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [
-    const HomePage(),
-    const LessonPage(),
-    const ProgramPage(),
-    const ProfilePage(),
-  ];
+  List<Widget> get _pages => [
+        HomePage(onNavigateToTab: navigateToTab),
+        const LessonPage(),
+        const ProgramPage(),
+        const ProfilePage(),
+      ];
 
   void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  void navigateToTab(int index) {
     setState(() {
       _selectedIndex = index;
     });

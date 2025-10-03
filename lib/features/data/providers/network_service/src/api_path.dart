@@ -2,6 +2,7 @@
 
 class LessonApiPath {
   static const getAllLessons = '/api/get-all-in-lesson';
+  static const getAllProgress = '/api/get-all-process';
   static const updateProcess = '/api/update-process';
 }
 
@@ -12,7 +13,7 @@ class ChatApiPath {
 
 class ProfileApiPath {
   static const getProfileScore = '/api/get-score-profile';
-  static const getProfileRank = '/api/get-profile-rank';
+  static const getProfileRank = '/api/get-top-user';
 }
 
 class AppApiPath {
@@ -31,8 +32,7 @@ class DemoApiPath {
 }
 
 class ProgramApiPath {
-  static const program = '/api/program';
-  static const programDetail = '/api/program-detail';
+  static const getAllPrograms = '/api/get-all-in-program';
 }
 
 // Unified path class to match service annotations

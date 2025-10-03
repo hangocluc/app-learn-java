@@ -8,8 +8,8 @@ part of 'profile_model.dart';
 
 ProfileModel _$ProfileModelFromJson(Map<String, dynamic> json) => ProfileModel(
       id: json['_id'] as String?,
-      mark: (json['mark'] as num?)?.toDouble(),
-      date: json['date'] as String?,
+      mark: _toDouble(json['mark']),
+      date: _toString(json['date']),
       userId: json['userId'] as String?,
     );
 

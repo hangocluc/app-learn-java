@@ -17,6 +17,17 @@ abstract class LessonService {
   @GET(LessonApiPath.getAllLessons)
   Future<ApiResponse<List<LessonModel>>> getAllLessons();
 
+  @GET(LessonApiPath.getAllProgress)
+  Future<ApiResponse<List<dynamic>>> getAllProgress(
+    @Query('userId') String userId,
+  );
+
+  @GET(LessonApiPath.getAllProgress)
+  Future<ApiResponse<dynamic>> getProgress(
+    @Query('userId') String userId,
+    @Query('lessonId') String lessonId,
+  );
+
   @POST(LessonApiPath.updateProcess)
   Future<ApiResponse<dynamic>> updateProcess(
     @Body() ProgressRequestModel body,
