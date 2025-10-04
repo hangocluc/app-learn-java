@@ -75,7 +75,7 @@ class _CodeEditorPageState extends State<CodeEditorPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl.get<CompilerCubit>(),
+      create: (context) => getIt.get<CompilerCubit>(),
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.programDetail.title ?? 'Code Editor'),

@@ -24,7 +24,7 @@ Future<void> registerCubitDI(GetIt sl) async {
   );
 
   sl.registerFactory<LessonCubit>(
-    () => LessonCubit(usecase: sl.get<LessonUsecase>()),
+    () => LessonCubit(useCase: sl.get<LessonUseCase>()),
   );
 
   sl.registerFactory<QuizCubit>(

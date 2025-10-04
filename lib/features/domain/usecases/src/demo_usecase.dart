@@ -24,10 +24,10 @@ class DemoUsecase extends BaseUseCase<DemoEntity?, NoParams?> {
     required String password,
   }) async {
     try {
-      final response = await repository.login(
-        email: email,
-        password: password,
-      );
+      // final response = await repository.login(
+      //   email: email,
+      //   password: password,
+      // );
       return const Right(null);
     } on Exception catch (error) {
       return Left(error);

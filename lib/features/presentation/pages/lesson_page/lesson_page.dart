@@ -9,26 +9,99 @@ import '../../cubits/lesson_cubit/lesson_cubit.dart';
 import '../../cubits/lesson_cubit/lesson_state.dart';
 import 'package:learn_java/features/domain/entities/src/lesson/lesson_entity.dart';
 import '../quiz_page/quiz_page.dart';
+import '../topic_page/topic_page.dart';
 
-class LessonPage extends StatefulWidget {
-  const LessonPage({Key? key}) : super(key: key);
+class LessonsPage extends StatefulWidget {
+  const LessonsPage({super.key});
 
   @override
-  State<LessonPage> createState() => _LessonPageState();
+  State<LessonsPage> createState() => _LessonsPageState();
 }
 
-class _LessonPageState extends State<LessonPage> {
+class _LessonsPageState extends State<LessonsPage> {
   late final LessonService _lessonService;
   late final AppSharedPreferences _sharedPreferences;
 
   @override
   void initState() {
     super.initState();
-    _lessonService = sl.get<LessonService>();
-    _sharedPreferences = sl.get<AppSharedPreferences>();
+    _lessonService = getIt.get<LessonService>();
+    _sharedPreferences = getIt.get<AppSharedPreferences>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<LessonCubit>().loadLessons();
     });
+  }
+
+  Widget _buildList(List<LessonEntity> lessons) {
+    if (lessons.isEmpty) {
+      return const Center(child: Text('No lessons'));
+    }
+    return RefreshIndicator(
+      onRefresh: () async {
+        await context.read<LessonCubit>().loadLessons();
+      },
+      child: ListView.separated(
+        itemCount: lessons.length,
+        separatorBuilder: (_, __) => const Divider(height: 1),
+        itemBuilder: (_, index) {
+          final item = lessons[index];
+          return ListTile(
+            title: Text(item.title),
+            subtitle: Text('Topics: ${item.totalTopic} • Quiz: 1'),
+            leading: CircleAvatar(child: Text('${index + 1}')),
+            trailing: item.quiz != null
+                ? IconButton(
+                    icon: const Icon(Icons.quiz),
+                    onPressed: () => _startQuiz(context, item.quiz!, true),
+                  )
+                : null,
+            onTap: item.quiz != null
+                ? () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => TopicPage(
+                            lesson: item,
+                            onTap: () =>
+                                _startQuiz(context, item.quiz!, false)),
+                      ),
+                    )
+                : null,
+          );
+        },
+      ),
+    );
+  }
+
+  void _startQuiz(BuildContext context, QuizEntity quiz, bool isFromQuiz) {
+    _markLessonStarted(quiz.lessonId);
+    Navigator.of(context)
+        .push(
+      MaterialPageRoute(
+        builder: (context) => QuizPage(
+          quiz: quiz,
+          isFromQuiz: isFromQuiz,
+        ),
+      ),
+    )
+        .then((_) {
+      if (mounted) {
+        context.read<LessonCubit>().loadLessons();
+      }
+    });
+  }
+
+  Future<void> _markLessonStarted(String lessonId) async {
+    try {
+      final String? userId =
+          _sharedPreferences.get(AppSharedPreferencesKey.userId) as String?;
+      if (userId == null || userId.isEmpty) return;
+      final request = ProgressRequestModel(
+        userId: userId,
+        lessonId: lessonId,
+        status: 0, // learning
+        quizStatus: 0, // quiz not finished yet
+      );
+      await _lessonService.updateProcess(request);
+    } catch (_) {}
   }
 
   @override
@@ -52,62 +125,5 @@ class _LessonPageState extends State<LessonPage> {
         },
       ),
     );
-  }
-
-  Widget _buildList(List<LessonEntity> lessons) {
-    if (lessons.isEmpty) {
-      return const Center(child: Text('No lessons'));
-    }
-    return ListView.separated(
-      itemCount: lessons.length,
-      separatorBuilder: (_, __) => const Divider(height: 1),
-      itemBuilder: (_, index) {
-        final item = lessons[index];
-        return ListTile(
-          title: Text(item.title),
-          subtitle:
-              Text('Topics: ${item.totalTopic} • Learned: ${item.learnCount}'),
-          leading: CircleAvatar(child: Text('${index + 1}')),
-          trailing: item.quiz != null
-              ? IconButton(
-                  icon: const Icon(Icons.quiz),
-                  onPressed: () => _startQuiz(context, item.quiz!),
-                )
-              : null,
-          onTap:
-              item.quiz != null ? () => _startQuiz(context, item.quiz!) : null,
-        );
-      },
-    );
-  }
-
-  void _startQuiz(BuildContext context, QuizEntity quiz) {
-    _markLessonStarted(quiz.lessonId);
-    Navigator.of(context)
-        .push(
-      MaterialPageRoute(
-        builder: (context) => QuizPage(quiz: quiz),
-      ),
-    )
-        .then((_) {
-      if (mounted) {
-        context.read<LessonCubit>().loadLessons();
-      }
-    });
-  }
-
-  Future<void> _markLessonStarted(String lessonId) async {
-    try {
-      final String? userId =
-          _sharedPreferences.get(AppSharedPreferencesKey.userId) as String?;
-      if (userId == null || userId.isEmpty) return;
-      final request = ProgressRequestModel(
-        userId: userId,
-        lessonId: lessonId,
-        status: 0, // learning
-        quizStatus: 0, // quiz not finished yet
-      );
-      await _lessonService.updateProcess(request);
-    } catch (_) {}
   }
 }

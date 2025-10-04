@@ -27,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String? _displayName;
   String? _email;
   String? _photoUrl;
-  final cubit = sl.get<ProfileCubit>();
+  final cubit = getIt.get<ProfileCubit>();
   @override
   void initState() {
     super.initState();
@@ -86,7 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 await StorageManager.clearUserData();
               } catch (_) {}
               try {
-                final prefs = sl.get<AppSharedPreferences>();
+                final prefs = getIt.get<AppSharedPreferences>();
                 await prefs.remove(AppSharedPreferencesKey.userId);
               } catch (_) {}
 

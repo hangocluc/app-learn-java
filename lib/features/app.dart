@@ -34,9 +34,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   List<BlocProvider> _appBlocProviders() {
     return [
-      BlocProvider<DemoCubit>(create: (context) => sl.get<DemoCubit>()),
-      BlocProvider<ProfileCubit>(create: (context) => sl.get<ProfileCubit>()),
-      BlocProvider<LessonCubit>(create: (context) => sl.get<LessonCubit>()),
+      BlocProvider<DemoCubit>(create: (context) => getIt.get<DemoCubit>()),
+      BlocProvider<ProfileCubit>(create: (context) => getIt.get<ProfileCubit>()),
+      BlocProvider<LessonCubit>(create: (context) => getIt.get<LessonCubit>()),
     ];
   }
 

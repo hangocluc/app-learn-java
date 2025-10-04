@@ -54,4 +54,3 @@ class QuizStateSummary extends QuizState {
   @override
   List<Object?> get props => [quiz, userAnswers, correctAnswers, score];
 }
-

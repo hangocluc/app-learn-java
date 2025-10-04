@@ -15,7 +15,7 @@ import 'features/app/app_env/env.dart';
 import 'features/app/app_env/network_env.dart';
 import 'features/app/dependencies/dependencies.dart';
 
-final GetIt sl = GetIt.instance;
+final GetIt getIt = GetIt.instance;
 
 const appIcon = Assets.icons;
 //Alice? alice;
@@ -25,10 +25,10 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await initFirebase();
   await enableFirebaseAnalytics();
-  registerNavigator(sl);
+  registerNavigator(getIt);
   await setupEnv();
   //setupAlice();
-  await registerDependencies(sl);
+  await registerDependencies(getIt);
   configLoading();
   runApp(const MyApp());
 }
@@ -51,7 +51,7 @@ Future<void> setupEnv() async {
   );
   await dotenv.load(fileName: envConfig(flavor));
   final env = EnvNetwork.envNetworkFromConfigure();
-  sl.registerLazySingleton(
+  getIt.registerLazySingleton(
     () => Env(
       envNetwork: env,
       isProduction: flavor == AppConstants.DEV,
@@ -62,8 +62,9 @@ Future<void> setupEnv() async {
 }
 
 GlobalKey<NavigatorState>? getNavigatorKeyByEnv() {
-  final isProd = sl<Env>().isProduction;
+  final isProd = getIt<Env>().isProduction;
   if (isProd) {
-    return sl<NavigationService>().navigatorKey;
+    return getIt<NavigationService>().navigatorKey;
   }
+  return null;
 }

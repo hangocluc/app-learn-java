@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:learn_java/features/data/models/quiz_model/topic_model.dart';
 import '../quiz_model/quiz_model.dart';
 
 part 'lesson_model.g.dart';
@@ -12,6 +13,8 @@ class LessonModel {
   @JsonKey(name: 'count')
   final int learnCount;
   final QuizModel? quiz;
+  @JsonKey(name: 'topic')
+  final List<Topics> topics;
 
   const LessonModel({
     required this.id,
@@ -19,6 +22,7 @@ class LessonModel {
     required this.totalTopic,
     required this.learnCount,
     this.quiz,
+    required this.topics,
   });
 
   factory LessonModel.fromJson(Map<String, dynamic> json) =>

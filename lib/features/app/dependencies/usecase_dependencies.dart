@@ -18,8 +18,8 @@ Future<void> registerUseCaseDI(GetIt sl) async {
     () => ProgramUsecase(repository: sl.get()),
   );
 
-  sl.registerFactory<LessonUsecase>(
-    () => LessonUsecase(repository: sl.get()),
+  sl.registerFactory<LessonUseCase>(
+    () => LessonUseCase(repository: sl.get()),
   );
 
   sl.registerFactory<ChatUsecase>(

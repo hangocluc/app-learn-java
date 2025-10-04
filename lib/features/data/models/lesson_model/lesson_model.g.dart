@@ -14,6 +14,9 @@ LessonModel _$LessonModelFromJson(Map<String, dynamic> json) => LessonModel(
       quiz: json['quiz'] == null
           ? null
           : QuizModel.fromJson(json['quiz'] as Map<String, dynamic>),
+      topics: (json['topic'] as List<dynamic>)
+          .map((e) => Topics.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$LessonModelToJson(LessonModel instance) =>
@@ -23,4 +26,5 @@ Map<String, dynamic> _$LessonModelToJson(LessonModel instance) =>
       'totalTopic': instance.totalTopic,
       'count': instance.learnCount,
       'quiz': instance.quiz,
+      'topic': instance.topics,
     };

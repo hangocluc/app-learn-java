@@ -10,7 +10,7 @@ class ProgramPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl.get<ProgramCubit>()..loadPrograms(),
+      create: (context) => getIt.get<ProgramCubit>()..loadPrograms(),
       child: const ProgramListPage(),
     );
   }

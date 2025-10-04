@@ -23,6 +23,7 @@ class LessonRepositoryImpl implements LessonRepository {
                   totalTopic: m.totalTopic,
                   learnCount: m.learnCount,
                   quiz: m.quiz != null ? _mapQuizModelToEntity(m.quiz!) : null,
+                  topics: m.topics,
                 ))
             .toList();
         return ApiResponse(entities, 200, 'Success', true);

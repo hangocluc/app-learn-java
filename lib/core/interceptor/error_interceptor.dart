@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
-// ignore: depend_on_referenced_packages
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../../common/configure/exception/api_exception.dart';
 import '../../common/utils/common_utils.dart';
 import '../../common/widget/app_loading_overlay/app_loading_overlay.dart';
@@ -165,7 +164,7 @@ Future refreshToken(DioException err, ErrorInterceptorHandler handler,
 }
 
 Dio _initDio() {
-  final env = sl.get<Env>().envNetwork;
+  final env = getIt.get<Env>().envNetwork;
   final dioOption = BaseOptions(
     baseUrl: env.apiServer,
     connectTimeout: Duration(seconds: env.apiConnectTimeout),
@@ -174,8 +173,20 @@ Dio _initDio() {
     contentType: env.apiContentType,
   );
   final dio = Dio(dioOption);
+
+  dio.interceptors.add(
+    PrettyDioLogger(
+      requestHeader: true, // log header của request
+      requestBody: true, // log body request
+      responseBody: true, // log body response
+      responseHeader: false, // nếu muốn log header response thì bật true
+      error: true, // log lỗi
+      compact: false, // false => log đầy đủ, dễ đọc hơn
+      maxWidth: 120, // giới hạn chiều rộng
+    ),
+  );
   dio.interceptors.addAll([
-    HandleErrorInterceptor(apiHeader: sl.get()),
+    HandleErrorInterceptor(apiHeader: getIt.get()),
     UnauthInterceptor(),
   ]);
 
@@ -189,7 +200,7 @@ void _saveTokenInfo(ApiResponse<DemoModel> result, ApiHeader? apiHeader) {
 
 void _refreshToken(
     DioException err, ErrorInterceptorHandler handler, ApiHeader? apiHeader) {
-  final context = sl.get<NavigationService>().navigatorKey.currentContext;
+  final context = getIt.get<NavigationService>().navigatorKey.currentContext;
 
   if (context != null) {
     refreshToken(err, handler, context, apiHeader);
@@ -198,7 +209,7 @@ void _refreshToken(
 
 void _handleLogout(DioException err, ErrorInterceptorHandler handler,
     ApiHeader? apiHeader, bool shouldLogout) {
-  final context = sl.get<NavigationService>().navigatorKey.currentContext;
+  final context = getIt.get<NavigationService>().navigatorKey.currentContext;
   //GenerateRoute.currentContext;
   if (shouldLogout == true && context != null) {
     apiHeader?.clearToken();
