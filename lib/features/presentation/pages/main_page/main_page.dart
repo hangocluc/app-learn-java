@@ -16,7 +16,7 @@ class _MainPageState extends State<MainPage> {
 
   List<Widget> get _pages => [
         HomePage(onNavigateToTab: navigateToTab),
-        const LessonPage(),
+        const LessonsPage(),
         const ProgramPage(),
         const ProfilePage(),
       ];

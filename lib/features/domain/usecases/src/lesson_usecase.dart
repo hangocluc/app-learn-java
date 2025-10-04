@@ -3,10 +3,10 @@ import 'package:learn_java/features/domain/entities/src/lesson/lesson_entity.dar
 import 'package:learn_java/features/domain/repositories/src/lesson/lesson_repository.dart';
 import '../../../../core/base/src/base_usecase.dart';
 
-class LessonUsecase extends BaseUseCase<List<LessonEntity>, NoParams> {
+class LessonUseCase extends BaseUseCase<List<LessonEntity>, NoParams> {
   final LessonRepository repository;
 
-  LessonUsecase({required this.repository});
+  LessonUseCase({required this.repository});
 
   @override
   Future<Either<Exception, List<LessonEntity>>> call(NoParams params) async {

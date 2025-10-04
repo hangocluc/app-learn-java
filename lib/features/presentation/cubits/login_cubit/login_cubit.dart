@@ -5,7 +5,7 @@ import '../../../domain/usecases/src/demo_usecase.dart';
 import 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  final demoUsecase = sl<DemoUsecase>();
+  final demoUsecase = getIt<DemoUsecase>();
 
   LoginCubit() : super(LoginStateInitial());
 

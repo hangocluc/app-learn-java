@@ -17,7 +17,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
-  final cubit = sl.get<DemoUsecase>();
+  final cubit = getIt.get<DemoUsecase>();
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   Future<void> _handleGoogleSignIn() async {
@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 // Also persist to AppSharedPreferences for quiz/progress flow
                 try {
-                  final prefs = sl.get<AppSharedPreferences>();
+                  final prefs = getIt.get<AppSharedPreferences>();
                   await prefs.setString(AppSharedPreferencesKey.userId, userId);
                 } catch (e) {
                   debugPrint(

@@ -104,32 +104,47 @@ class HomePage extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: _buildStatCard(
-                'Lessons',
-                '12',
-                'Completed',
-                Icons.book,
-                Colors.green,
+              child: GestureDetector(
+                onTap: () {
+                  onNavigateToTab!(1);
+                },
+                child: _buildStatCard(
+                  'Lessons',
+                  '12',
+                  'Completed',
+                  Icons.book,
+                  Colors.green,
+                ),
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: _buildStatCard(
-                'Programs',
-                '8',
-                'Explored',
-                Icons.code,
-                Colors.blue,
+              child: GestureDetector(
+                onTap: () {
+                  onNavigateToTab!(2);
+                },
+                child: _buildStatCard(
+                  'Programs',
+                  '5',
+                  'Explored',
+                  Icons.code,
+                  Colors.blue,
+                ),
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: _buildStatCard(
-                'Score',
-                '850',
-                'Points',
-                Icons.star,
-                Colors.orange,
+              child: GestureDetector(
+                onTap: () {
+                  onNavigateToTab!(3);
+                },
+                child: _buildStatCard(
+                  'Score',
+                  '850',
+                  'Points',
+                  Icons.star,
+                  Colors.orange,
+                ),
               ),
             ),
           ],

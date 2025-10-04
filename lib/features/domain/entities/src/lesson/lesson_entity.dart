@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:learn_java/features/data/models/quiz_model/topic_model.dart';
 
 class LessonEntity extends Equatable {
   final String id;
@@ -6,6 +7,7 @@ class LessonEntity extends Equatable {
   final int totalTopic;
   final int learnCount;
   final QuizEntity? quiz;
+  final List<Topics> topics;
 
   const LessonEntity({
     required this.id,
@@ -13,10 +15,11 @@ class LessonEntity extends Equatable {
     required this.totalTopic,
     required this.learnCount,
     this.quiz,
+    required this.topics,
   });
 
   @override
-  List<Object?> get props => [id, title, totalTopic, learnCount, quiz];
+  List<Object?> get props => [id, title, totalTopic, learnCount, quiz, topics];
 }
 
 class QuizEntity extends Equatable {

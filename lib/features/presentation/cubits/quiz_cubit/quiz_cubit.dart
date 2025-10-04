@@ -123,7 +123,7 @@ class QuizCubit extends Cubit<QuizState> {
     } catch (_) {}
 
     // 2) Fallback: compare by text (API may return exact answer text)
-    final normalized = (String s) => s.trim().toLowerCase();
+    normalized(String s) => s.trim().toLowerCase();
     final target = normalized(question.correctAnswer);
     if (target.isNotEmpty) {
       if (normalized(userAnswer) == target) return true;
