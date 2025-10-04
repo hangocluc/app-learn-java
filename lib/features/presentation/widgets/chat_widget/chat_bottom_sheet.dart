@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../domain/entities/src/chat/chat_entity.dart';
 import '../../cubits/chat_cubit/chat_cubit.dart';
 import 'chat_item_widget.dart';
 

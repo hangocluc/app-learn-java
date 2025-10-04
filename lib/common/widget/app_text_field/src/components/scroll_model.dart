@@ -127,7 +127,6 @@ class CommonScrollModel extends ScrollModel {
     return '$value';
   }
 
-  @override
   String getUnit() {
     return unit;
   }

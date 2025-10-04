@@ -166,7 +166,6 @@ Future refreshToken(DioException err, ErrorInterceptorHandler handler,
 
 Dio _initDio() {
   final env = sl.get<Env>().envNetwork;
-  final isProduction = sl.get<Env>().isProduction;
   final dioOption = BaseOptions(
     baseUrl: env.apiServer,
     connectTimeout: Duration(seconds: env.apiConnectTimeout),

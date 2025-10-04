@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../../../../common/widget/app_only_text_page.dart/app_only_text_param.dart';
-import '../../../../common/widget/app_web_view/app_web_view.dart';
 import '../../../presentation/pages/main_page/main_page.dart';
 import '../../../presentation/pages/demo_page/compoment/demo_page.dart';
 import '../../../presentation/pages/login_page/login_page.dart';

@@ -1,13 +1,10 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../main.dart';
 import '../../theme/app_color.dart';
-import '../../utils/common_utils.dart';
 import '../app_icon/app_asset_image.dart';
 
 class AppPickAvatar extends StatefulWidget {

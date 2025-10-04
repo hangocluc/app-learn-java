@@ -1,7 +1,5 @@
 import 'package:learn_java/common/theme/app_color.dart';
 import 'package:flutter/material.dart';
-
-import '../../../main.dart';
 import '../../theme/app_typography.dart';
 
 class ChartPainter extends CustomPainter {

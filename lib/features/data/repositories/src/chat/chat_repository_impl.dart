@@ -1,6 +1,5 @@
 import 'package:learn_java/core/base/src/api_response.dart';
 import 'package:learn_java/features/data/providers/chat_service/chat_service.dart';
-import 'package:learn_java/features/data/models/chat_model/chat_model.dart';
 import 'package:learn_java/features/domain/repositories/src/chat/chat_repository.dart';
 import 'package:learn_java/features/domain/entities/src/chat/chat_entity.dart';
 // Removed wrong/duplicate ApiResponse import
@@ -17,7 +16,7 @@ class ChatRepositoryImpl implements ChatRepository {
       final response = await chatService.getCommentsByQuestion(questionId);
       if (response.success == true && response.data != null) {
         final entities = response.data!
-            .map((model) => (model as ChatModel).toEntity())
+            .map((model) => (model).toEntity())
             .toList();
         return ApiResponse(entities, 200, 'Success', true);
       } else {
@@ -35,7 +34,7 @@ class ChatRepositoryImpl implements ChatRepository {
       final response = await chatService.likeComment(commentId, userId);
       if (response.success == true && response.data != null) {
         final entities = response.data!
-            .map((model) => (model as ChatModel).toEntity())
+            .map((model) => (model).toEntity())
             .toList();
         return ApiResponse(entities, 200, 'Success', true);
       } else {

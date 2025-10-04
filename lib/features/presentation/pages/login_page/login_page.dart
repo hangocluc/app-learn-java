@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:learn_java/features/data/providers/google_signin_service.dart';
 import 'package:learn_java/main.dart';
-
 import '../../../../core/storage/storage_manager.dart';
 import 'package:learn_java/common/app_shared_preferences/app_shared_preferences.dart';
 import 'package:learn_java/common/app_shared_preferences/app_shared_preferences_key.dart';
 import '../../../app/routes/src/routes_name.dart';
 import '../../../data/models/src/user_model.dart';
 import '../../../domain/usecases/src/demo_usecase.dart';
-import '../demo_page/compoment/demo_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

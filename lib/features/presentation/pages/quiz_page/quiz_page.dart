@@ -10,7 +10,7 @@ import '../../../domain/entities/src/lesson/lesson_entity.dart';
 class QuizPage extends StatelessWidget {
   final QuizEntity quiz;
 
-  const QuizPage({Key? key, required this.quiz}) : super(key: key);
+  const QuizPage({super.key, required this.quiz});
 
   @override
   Widget build(BuildContext context) {

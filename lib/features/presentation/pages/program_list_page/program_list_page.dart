@@ -5,7 +5,7 @@ import 'package:learn_java/features/presentation/cubits/program_cubit/program_cu
 import 'package:learn_java/features/presentation/pages/program_detail_page/program_detail_page.dart';
 
 class ProgramListPage extends StatefulWidget {
-  const ProgramListPage({Key? key}) : super(key: key);
+  const ProgramListPage({super.key});
 
   @override
   State<ProgramListPage> createState() => _ProgramListPageState();

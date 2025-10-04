@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:learn_java/main.dart';
 import 'package:learn_java/common/app_shared_preferences/app_shared_preferences.dart';
 import 'package:learn_java/common/app_shared_preferences/app_shared_preferences_key.dart';
-import 'package:learn_java/features/app/routes/src/routes_name.dart';
 import 'package:learn_java/features/presentation/pages/login_page/login_page.dart';
 import '../../cubits/profile_cubit/profile_cubit.dart';
 import '../../cubits/profile_cubit/profile_state.dart';

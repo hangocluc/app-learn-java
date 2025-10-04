@@ -1,6 +1,4 @@
-import 'package:learn_java/main.dart';
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:learn_java/core/extension/src/string_extension.dart';
 import '../../theme/app_color.dart';

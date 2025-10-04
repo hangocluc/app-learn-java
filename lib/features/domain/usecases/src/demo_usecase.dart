@@ -1,6 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:learn_java/features/domain/entities/src/program/program_model.dart';
-
 import '../../../../core/base/src/base_usecase.dart';
 import '../../entities/src/demo_entity.dart';
 import '../../repositories/src/app_repository.dart';
