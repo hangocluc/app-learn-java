@@ -8,6 +8,7 @@ import '../../presentation/cubits/quiz_cubit/quiz_cubit.dart';
 import '../../presentation/cubits/chat_cubit/chat_cubit.dart';
 import '../../presentation/cubits/program_cubit/program_cubit.dart';
 import '../../presentation/cubits/compiler_cubit/compiler_cubit.dart';
+import '../../presentation/cubits/home_cubit/home_cubit.dart';
 import '../../domain/usecases/src/profile/profile_usecase.dart' as profile_uc;
 import '../../domain/usecases/src/lesson_usecase.dart';
 import '../../domain/usecases/program_usecase.dart';
@@ -43,5 +44,14 @@ Future<void> registerCubitDI(GetIt sl) async {
 
   sl.registerFactory<ProgramCubit>(
     () => ProgramCubit(programUsecase: sl.get<ProgramUsecase>()),
+  );
+
+  sl.registerFactory<HomeCubit>(
+    () => HomeCubit(
+      profileUsecase: sl.get<profile_uc.ProfileUsecase>(),
+      lessonUsecase: sl.get<LessonUseCase>(),
+      programUsecase: sl.get<ProgramUsecase>(),
+      sharedPreferences: sl.get<AppSharedPreferences>(),
+    ),
   );
 }

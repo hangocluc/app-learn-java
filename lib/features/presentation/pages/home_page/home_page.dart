@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../cubits/home_cubit/home_cubit.dart';
+import '../../cubits/home_cubit/home_state.dart';
 
 class HomePage extends StatelessWidget {
   final Function(int)? onNavigateToTab;
@@ -9,22 +12,46 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(context),
-              const SizedBox(height: 24),
-              _buildQuickStats(context),
-              const SizedBox(height: 24),
-              _buildQuickActions(context),
-              const SizedBox(height: 24),
-              _buildRecentActivity(context),
-              const SizedBox(height: 24),
-              _buildFeaturedContent(context),
-            ],
-          ),
+        child: BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            if (state is HomeStateLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (state is HomeStateFailure) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Error: ${state.message}'),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () => context.read<HomeCubit>().refreshData(),
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeader(context),
+                  const SizedBox(height: 24),
+                  _buildQuickStats(context, state),
+                  const SizedBox(height: 24),
+                  _buildQuickActions(context),
+                  const SizedBox(height: 24),
+                  _buildRecentActivity(context, state),
+                  const SizedBox(height: 24),
+                  _buildFeaturedContent(context, state),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
@@ -89,7 +116,22 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildQuickStats(BuildContext context) {
+  Widget _buildQuickStats(BuildContext context, HomeState state) {
+    // Default values for initial state
+    int completedLessons = 0;
+    int totalLessons = 0;
+    int exploredPrograms = 0;
+    int totalPrograms = 0;
+    double userScore = 0.0;
+
+    if (state is HomeStateSuccess) {
+      completedLessons = state.completedLessons;
+      totalLessons = state.totalLessons;
+      exploredPrograms = state.exploredPrograms;
+      totalPrograms = state.totalPrograms;
+      userScore = state.userScore;
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -110,7 +152,7 @@ class HomePage extends StatelessWidget {
                 },
                 child: _buildStatCard(
                   'Lessons',
-                  '12',
+                  '$completedLessons/$totalLessons',
                   'Completed',
                   Icons.book,
                   Colors.green,
@@ -125,7 +167,7 @@ class HomePage extends StatelessWidget {
                 },
                 child: _buildStatCard(
                   'Programs',
-                  '5',
+                  '$exploredPrograms/$totalPrograms',
                   'Explored',
                   Icons.code,
                   Colors.blue,
@@ -140,7 +182,7 @@ class HomePage extends StatelessWidget {
                 },
                 child: _buildStatCard(
                   'Score',
-                  '850',
+                  userScore.toStringAsFixed(0),
                   'Points',
                   Icons.star,
                   Colors.orange,
@@ -319,7 +361,25 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildRecentActivity(BuildContext context) {
+  Widget _buildRecentActivity(BuildContext context, HomeState state) {
+    List<Map<String, dynamic>> activities = [];
+
+    if (state is HomeStateSuccess) {
+      activities = state.recentActivities;
+    }
+
+    // Fallback to default activities if no data
+    if (activities.isEmpty) {
+      activities = [
+        {
+          'title': 'No recent activity',
+          'time': 'Start learning to see your progress',
+          'icon': Icons.info,
+          'color': Colors.grey,
+        }
+      ];
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -339,28 +399,22 @@ class HomePage extends StatelessWidget {
             border: Border.all(color: Colors.grey.shade200),
           ),
           child: Column(
-            children: [
-              _buildActivityItem(
-                'Completed Lesson: Variables & Data Types',
-                '2 hours ago',
-                Icons.check_circle,
-                Colors.green,
-              ),
-              const Divider(),
-              _buildActivityItem(
-                'Started Program: Calculator App',
-                '1 day ago',
-                Icons.code,
-                Colors.blue,
-              ),
-              const Divider(),
-              _buildActivityItem(
-                'Quiz Score: 85/100',
-                '2 days ago',
-                Icons.star,
-                Colors.orange,
-              ),
-            ],
+            children: activities.asMap().entries.map((entry) {
+              final index = entry.key;
+              final activity = entry.value;
+
+              return Column(
+                children: [
+                  _buildActivityItem(
+                    activity['title'],
+                    activity['time'],
+                    activity['icon'],
+                    activity['color'],
+                  ),
+                  if (index < activities.length - 1) const Divider(),
+                ],
+              );
+            }).toList(),
           ),
         ),
       ],
@@ -408,7 +462,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildFeaturedContent(BuildContext context) {
+  Widget _buildFeaturedContent(BuildContext context, HomeState state) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -424,32 +478,76 @@ class HomePage extends StatelessWidget {
           height: 200,
           child: ListView(
             scrollDirection: Axis.horizontal,
-            children: [
-              _buildFeaturedCard(
-                'Java Basics',
-                'Learn fundamental concepts',
-                Icons.school,
-                Colors.blue,
-              ),
-              const SizedBox(width: 12),
-              _buildFeaturedCard(
-                'Object-Oriented Programming',
-                'Master OOP principles',
-                Icons.architecture,
-                Colors.green,
-              ),
-              const SizedBox(width: 12),
-              _buildFeaturedCard(
-                'Data Structures',
-                'Arrays, Lists, and more',
-                Icons.storage,
-                Colors.purple,
-              ),
-            ],
+            children: _buildFeaturedItems(state),
           ),
         ),
       ],
     );
+  }
+
+  List<Widget> _buildFeaturedItems(HomeState state) {
+    // Default featured content
+    List<Map<String, dynamic>> featuredItems = [
+      {
+        'title': 'Java Basics',
+        'subtitle': 'Learn fundamental concepts',
+        'icon': Icons.school,
+        'color': Colors.blue,
+      },
+      {
+        'title': 'Object-Oriented Programming',
+        'subtitle': 'Master OOP principles',
+        'icon': Icons.architecture,
+        'color': Colors.green,
+      },
+      {
+        'title': 'Data Structures',
+        'subtitle': 'Arrays, Lists, and more',
+        'icon': Icons.storage,
+        'color': Colors.purple,
+      },
+    ];
+
+    // If we have data, show progress-based content
+    if (state is HomeStateSuccess) {
+      if (state.completedLessons > 0) {
+        featuredItems = [
+          {
+            'title': 'Continue Learning',
+            'subtitle': '${state.completedLessons} lessons completed',
+            'icon': Icons.play_circle,
+            'color': Colors.green,
+          },
+          {
+            'title': 'Your Score',
+            'subtitle': '${state.userScore.toStringAsFixed(0)} points earned',
+            'icon': Icons.star,
+            'color': Colors.orange,
+          },
+          {
+            'title': 'Progress',
+            'subtitle': 'Keep up the great work!',
+            'icon': Icons.trending_up,
+            'color': Colors.blue,
+          },
+        ];
+      }
+    }
+
+    List<Widget> widgets = [];
+    for (int i = 0; i < featuredItems.length; i++) {
+      final item = featuredItems[i];
+      widgets.add(_buildFeaturedCard(
+        item['title'],
+        item['subtitle'],
+        item['icon'],
+        item['color'],
+      ));
+      if (i < featuredItems.length - 1) {
+        widgets.add(const SizedBox(width: 12));
+      }
+    }
+    return widgets;
   }
 
   Widget _buildFeaturedCard(

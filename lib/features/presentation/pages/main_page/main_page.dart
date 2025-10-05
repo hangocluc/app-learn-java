@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import '../home_page/home_page.dart';
 import '../lesson_page/lesson_page.dart';
 import '../program_page/program_page.dart';
 import '../profile_page/profile_page.dart';
+import '../../cubits/home_cubit/home_cubit.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -15,7 +18,10 @@ class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
   List<Widget> get _pages => [
-        HomePage(onNavigateToTab: navigateToTab),
+        BlocProvider(
+          create: (context) => GetIt.instance<HomeCubit>()..loadHomeData(),
+          child: HomePage(onNavigateToTab: navigateToTab),
+        ),
         const LessonsPage(),
         const ProgramPage(),
         const ProfilePage(),
