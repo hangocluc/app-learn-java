@@ -44,8 +44,4 @@ Future<void> registerCubitDI(GetIt sl) async {
   sl.registerFactory<ProgramCubit>(
     () => ProgramCubit(programUsecase: sl.get<ProgramUsecase>()),
   );
-
-  sl.registerFactory<CompilerCubit>(
-    () => CompilerCubit(compilerService: sl.get<CompilerService>()),
-  );
 }
