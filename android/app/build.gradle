@@ -42,3 +42,9 @@ android {
 flutter {
     source = '../..'
 }
+
+dependencies {
+    // JavaCompileEngine dependencies
+    implementation 'com.github.xiaoyvyv.JavaCompileEngine:library:1.1'
+    implementation 'com.github.xiaoyvyv.JavaCompileEngine:dx:1.1'
+}

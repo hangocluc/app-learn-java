@@ -6,7 +6,7 @@
 
     <application
         android:label="learn_java"
-        android:name="${applicationName}"
+        android:name=".LearnJavaApplication"
         android:icon="@mipmap/ic_launcher">
 
         <!-- Google Sign-In meta-data -->
